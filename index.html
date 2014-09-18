@@ -1,0 +1,57 @@
+<!doctype html>
+
+<head>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="jquery.panzoom/dist/jquery.panzoom.js"></script>
+
+</head>
+
+<body>
+
+    <h1>My Title</h1>
+
+	<img id="my-image" class="panzoom-elements" src="http://thenosemilk.com/thenosemilk2014/wp-content/uploads/2014/08/weirdalcomic1-320x180.png" />
+
+    <script>
+    
+        // JQuery Selector to add panzoom to
+    	$(".panzoom-elements").panzoom({
+        	
+            // The minumum scale percentage the image is allowed to be
+            // Zoomed to
+            minScale: .5,
+            
+            // The increment at which to zoom
+            // adds/subtracts to the scale each time zoomIn/Out is called
+            increment: 0.5,
+        	
+            // There may be some use cases for zooming without panning or vice versa
+            // NOTE: disablePan also disables focal point zooming
+            disablePan: true,
+        	
+            // Indicate that the element should be contained within it's parent when panning
+            // Note: this does not affect zooming outside of the parent
+            // Set this value to 'invert' to only allow panning outside of the parent element (the opposite of the normal use of contain)
+            // 'invert' is useful for a large Panzoom element where you don't want to show anything behind it
+            contain: "invert",
+        	
+            onZoom: function(){
+                // Get the current scale of the image
+        		var currScale = $(this).css("transform").substring(7,$(this).css("transform").indexOf(","));
+
+                // If the scale is less than 100% disable pan and set location to 0,0
+        		if(currScale <= 1){
+        			$(this).panzoom("option", "disablePan", true);
+                    $(this).css("transform","matrix("+currScale+", 0, 0, "+currScale+", 0, 0)");
+        		// If the scale is greater than 100% enable pan
+                }else{
+        			$(this).panzoom("option", "disablePan", false);
+        		}
+        	}
+      	});
+    </script>
+
+</body>
+</html>
